@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react'
 import audioSource from '../data/audio/file-1.mp3';
+import audioSource2 from '../data/audio/song-2.mp3';
 import image from '../data/images/aya.jpg';
 import bgImage from '../data/images/bg-image.jpg'
 
@@ -9,7 +10,7 @@ function AudioVisualizer() {
     //My state initializations go here
     const [frequency, setFrequency] = useState([]);
     const [agents, setAgents] = useState([])
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
     const canvasRef = useRef(null);
 
@@ -30,20 +31,28 @@ function AudioVisualizer() {
     }
 
 
-    const togglePlayPause = (e) => {
-
-        const prevValue = isPlaying;
-        setIsPlaying(!prevValue)
-
-        if (!prevValue) {
-            audioPlayer.current.play()
-        } else {
-            audioPlayer.current.pause()
-
-        }
-
+    const playPause = () => {
+        setIsPlaying(!isPlaying)
+        console.log(isPlaying)
     }
 
+    useEffect(() => {
+        if (isPlaying) {
+            audioPlayer.current.play();
+
+
+        } else {
+            audioPlayer.current.pause();
+        }
+    }, [isPlaying]);
+
+
+    useEffect(() => {
+        // Pause and clean up on unmount
+        return () => {
+            audioPlayer.current.pause();
+        }
+    }, []);
 
     // ======================================================================================
     // End of utility functions
@@ -168,10 +177,8 @@ function AudioVisualizer() {
     }
     useEffect(() => {
         const audio = audioPlayer.current
-        audio.autoplay = true;
         audio.muted = false;
-        audio.controls = true;
-        audio.play()
+
 
         var audioContext = new window.AudioContext();
         var source = audioContext.createMediaElementSource(audio);
@@ -203,7 +210,6 @@ function AudioVisualizer() {
         const context = canvas.getContext('2d');
         const render = () => {
             drawLine(context)
-            console.log(frequency)
             window.requestAnimationFrame(render)
         }
         render()
@@ -212,11 +218,11 @@ function AudioVisualizer() {
     }, [frequency])
 
     return (
-        <div className='relative bg-cover bg-no-repeat h-scren w-screen'>
+        <div onClick={playPause} className='relative bg-cover bg-no-repeat h-scren w-screen'>
             <audio ref={audioPlayer} src={audioSource} preload='metadata' className='hidden'> </audio>
 
-            <div style={{ width: `${frequency[24] + 8}rem`, height: `${frequency[24] + 8}rem` }} className=" absolute top-[50%] left-[45%] bg-[#711724] rounded-full flex items-center justify-center">
-                <button onClick={togglePlayPause} style={{ backgroundImage: `url(${image})`, boxShadow: "0 0 10px  rgba(0,0,0,0.6)" }} className={isPlaying ? 'w-24 h-24  bg-cover bg-blue-300 m-3 bg-no-repeat  rounded-full' : ' rounded-full w-24 h-24 inset-2/4 bg-red-300 bg-cover m-3 bg-no-repeat '}> </button>
+            <div className="w-32 h-32 absolute top-[50%] left-[50%] -mt-16 -ml-16 bg-[#711724] rounded-full flex items-center justify-center">
+                <button style={{ backgroundImage: `url(${image})`, boxShadow: "0 0 10px  rgba(0,0,0,0.6)" }} className={isPlaying ? 'w-24 h-24  bg-cover bg-blue-300 m-3 bg-no-repeat  rounded-full' : ' rounded-full w-24 h-24  bg-red-300 bg-cover m-3 bg-no-repeat '}> </button>
 
             </div>
 
