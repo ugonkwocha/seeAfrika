@@ -113,7 +113,7 @@ function AudioVisualizer() {
             context.translate(this.pos.x, this.pos.y);
 
             context.lineWidth = 2
-            context.fillStyle = "rgb(245,245,245)";
+            context.fillStyle = "rgb(245,245,245,0.2)";
             context.beginPath();
             context.arc(0, 0, this.radius, 0, Math.PI * 2);
 
