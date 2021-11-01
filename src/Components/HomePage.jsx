@@ -10,7 +10,7 @@ function HomePage() {
                     SEE AFRIKA
                 </h1>
 
-                <p className='text-white w-1/3 text-center mt-8'>A JavaScript audio visualization
+                <p className='text-white sm:w-1/3 w-5/6 text-center mt-8'>A JavaScript audio visualization
                     of great speeches made by great Africans</p>
 
                 <Link to='/visual-stories' >

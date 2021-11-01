@@ -9,6 +9,7 @@ import bgImage from '../data/images/bg-image.jpg'
 function AudioVisualizer() {
     //My state initializations go here
     const [image, setImage] = useState(ayaImage)
+    const [speechTitle, setSpeechTitle] = useState("Aya Chebbi's TED X speech at Muenster, Germany")
     const [audioSource, setAudioSource] = useState(aya)
     const [frequency, setFrequency] = useState([]);
     const [agents, setAgents] = useState([])
@@ -27,6 +28,8 @@ function AudioVisualizer() {
     const changeAudio = () => {
         setAudioSource(nelsonMandela)
         setImage(mandela)
+        setIsPlaying(false)
+        setSpeechTitle("Nelson Mandela's speech at the Laureus World Sports Awards 2000,Monaco.")
     }
 
     // when the component mounts, the audio file is created
@@ -227,14 +230,14 @@ function AudioVisualizer() {
             <div className='relative bg-cover bg-no-repeat h-scren w-screen'>
 
                 <audio ref={audioPlayer} src={audioSource} preload='metadata' className='hidden'> </audio>
-                <div className="flex flex-col items-center jusfify-center absolute top-[50%] left-[50%] -mt-32 -ml-64">
+                <div className="flex flex-col items-center jusfify-center absolute top-[50%] sm:left-[50%] left-[0%] -mt-32 sm:ml-[-25%] sm:w-1/2 ml-[0%] w-full ">
 
                     <div className="w-32 h-32  bg-[#711724] rounded-full flex items-center justify-center">
                         <button style={{ backgroundImage: `url(${image})`, boxShadow: "0 0 10px  rgba(0,0,0,0.6)" }} className={isPlaying ? 'w-24 h-24  bg-cover bg-blue-300 m-3 bg-no-repeat  rounded-full' : ' rounded-full w-24 h-24  bg-red-300 bg-cover m-3 bg-no-repeat '}> </button>
                     </div>
                     <p className="text-center text-white">Tap anywhere to {isPlaying ? 'pause' : "play"}</p>
-                    <p className='text-white'>title of visual art: Connected</p>
-                    <p className='text-white'>Visuals based on of Aya Chebbi's TED X speech at Muenster, Germany</p>
+                    <p className='text-white'>Title of visual art: Connected</p>
+                    <p className='text-white w-5/6 text-center'>Visuals based on {speechTitle}</p>
                     <button onClick={changeAudio} className='bg-[#F2811D] p-4 text-white mt-16 z-50'>
                         Click to view another Speech
                     </button>
