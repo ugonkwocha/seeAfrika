@@ -18,9 +18,6 @@ function AudioVisualizer() {
 
     // creating the audio file
 
-    const handlePopup = () => {
-        setOpenPopup(false)
-    }
 
     const audioPlayer = useRef();
 
@@ -38,7 +35,7 @@ function AudioVisualizer() {
 
     const playPause = () => {
         setIsPlaying(!isPlaying)
-        
+
     }
 
     useEffect(() => {
@@ -135,7 +132,7 @@ function AudioVisualizer() {
 
     function AgentCreator() {
         const agents = [];
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 30; i++) {
 
             const x = getRandomRange(0, dimensions.width)
             const y = getRandomRange(0, dimensions.height)
@@ -162,7 +159,7 @@ function AudioVisualizer() {
 
                 if (dist > 200) continue;
 
-                context.lineWidth = frequency[8] * 0.01 + 1;
+                context.lineWidth = 2;
                 context.strokeStyle = '#D6DEE9'
                 context.beginPath();
                 context.moveTo(agent.pos.x, agent.pos.y);
@@ -220,7 +217,7 @@ function AudioVisualizer() {
         <div className="w-screen">
 
             <div onClick={playPause} className='relative bg-cover bg-no-repeat h-scren w-screen'>
-                
+
                 <audio ref={audioPlayer} src={audioSource} preload='metadata' className='hidden'> </audio>
 
                 <div className="w-32 h-32 absolute top-[50%] left-[50%] -mt-16 -ml-16 bg-[#711724] rounded-full flex items-center justify-center">
