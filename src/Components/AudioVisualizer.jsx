@@ -38,7 +38,7 @@ function AudioVisualizer() {
 
     const playPause = () => {
         setIsPlaying(!isPlaying)
-        console.log(isPlaying)
+        
     }
 
     useEffect(() => {
@@ -220,11 +220,7 @@ function AudioVisualizer() {
         <div className="w-screen">
 
             <div onClick={playPause} className='relative bg-cover bg-no-repeat h-scren w-screen'>
-                {openPopup && <div onClick={handlePopup} className="w-full bg-red-300 h-full ">
-                    click to close
-                </div>
-                }
-
+                
                 <audio ref={audioPlayer} src={audioSource} preload='metadata' className='hidden'> </audio>
 
                 <div className="w-32 h-32 absolute top-[50%] left-[50%] -mt-16 -ml-16 bg-[#711724] rounded-full flex items-center justify-center">
