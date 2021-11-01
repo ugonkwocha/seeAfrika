@@ -13,7 +13,6 @@ function HomePage() {
                 <p className='text-white w-1/3 text-center mt-8'>A JavaScript audio visualization
                     of great speeches made by great Africans</p>
 
-
                 <Link to='/visual-stories' >
                     <button className='bg-[#F2811D] p-4 text-white mt-16'>
                         Click to enter visual experience

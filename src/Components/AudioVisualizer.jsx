@@ -1,19 +1,22 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react'
-import audioSource from '../data/audio/file-1.mp3';
-import audioSource2 from '../data/audio/song-2.mp3';
-import image from '../data/images/aya.jpg';
+import aya from '../data/audio/file-1.mp3';
+import nelsonMandela from '../data/audio/song-2.mp3';
+import ayaImage from '../data/images/aya.jpg';
 import bgImage from '../data/images/bg-image.jpg'
 
 
 function AudioVisualizer() {
     //My state initializations go here
-    const [openPopup, setOpenPopup] = useState(true)
+    const [image, setImage] = useState(ayaImage)
+    const [audioSource, setAudioSource] = useState(aya)
     const [frequency, setFrequency] = useState([]);
     const [agents, setAgents] = useState([])
     const [isPlaying, setIsPlaying] = useState(false);
     const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
     const canvasRef = useRef(null);
+
+    const mandela = 'https://www.history.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTU3OTIzNjU0NzY3ODE0Mjkw/nelson-mandela-his-written-legacys-featured-photo.jpg'
 
 
     // creating the audio file
@@ -21,6 +24,10 @@ function AudioVisualizer() {
 
     const audioPlayer = useRef();
 
+    const changeAudio = () => {
+        setAudioSource(nelsonMandela)
+        setImage(mandela)
+    }
 
     // when the component mounts, the audio file is created
 
@@ -112,8 +119,9 @@ function AudioVisualizer() {
             context.save();
             context.translate(this.pos.x, this.pos.y);
 
+            // this controls the color and style of the circles
             context.lineWidth = 2
-            context.fillStyle = "rgb(245,245,245,0.2)";
+            context.fillStyle = `rgb(${audioPlayer.current.currentTime == 0 ? '255' : Math.sin(audioPlayer.current.currentTime) * 245},245,245,${audioPlayer.current.currentTime == 0 ? '0.2' : Math.sin(audioPlayer.current.currentTime * 0.1)})`;
             context.beginPath();
             context.arc(0, 0, this.radius, 0, Math.PI * 2);
 
@@ -157,7 +165,7 @@ function AudioVisualizer() {
                 const other = agents[j]
                 const dist = agent.pos.getDistance(other.pos)
 
-                if (dist > 200) continue;
+                if (dist > 190) continue;
 
                 context.lineWidth = 2;
                 context.strokeStyle = '#D6DEE9'
@@ -216,15 +224,23 @@ function AudioVisualizer() {
     return (
         <div className="w-screen">
 
-            <div onClick={playPause} className='relative bg-cover bg-no-repeat h-scren w-screen'>
+            <div className='relative bg-cover bg-no-repeat h-scren w-screen'>
 
                 <audio ref={audioPlayer} src={audioSource} preload='metadata' className='hidden'> </audio>
+                <div className="flex flex-col items-center jusfify-center absolute top-[50%] left-[50%] -mt-32 -ml-64">
 
-                <div className="w-32 h-32 absolute top-[50%] left-[50%] -mt-16 -ml-16 bg-[#711724] rounded-full flex items-center justify-center">
-                    <button style={{ backgroundImage: `url(${image})`, boxShadow: "0 0 10px  rgba(0,0,0,0.6)" }} className={isPlaying ? 'w-24 h-24  bg-cover bg-blue-300 m-3 bg-no-repeat  rounded-full' : ' rounded-full w-24 h-24  bg-red-300 bg-cover m-3 bg-no-repeat '}> </button>
+                    <div className="w-32 h-32  bg-[#711724] rounded-full flex items-center justify-center">
+                        <button style={{ backgroundImage: `url(${image})`, boxShadow: "0 0 10px  rgba(0,0,0,0.6)" }} className={isPlaying ? 'w-24 h-24  bg-cover bg-blue-300 m-3 bg-no-repeat  rounded-full' : ' rounded-full w-24 h-24  bg-red-300 bg-cover m-3 bg-no-repeat '}> </button>
+                    </div>
+                    <p className="text-center text-white">Tap anywhere to {isPlaying ? 'pause' : "play"}</p>
+                    <p className='text-white'>title of visual art: Connected</p>
+                    <p className='text-white'>Visuals based on of Aya Chebbi's TED X speech at Muenster, Germany</p>
+                    <button onClick={changeAudio} className='bg-[#F2811D] p-4 text-white mt-16 z-50'>
+                        Click to view another Speech
+                    </button>
                 </div>
 
-                <div style={{ backgroundImage: `url(https://images.unsplash.com/photo-1489493887464-892be6d1daae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1167&q=80.jpg)` }} className="w-full h-full absolute bg-[rgba(0,0,0,0.5)] bg-cover bg-no-repeat opacity-10">
+                <div onClick={playPause} style={{ backgroundImage: `url(https://images.unsplash.com/photo-1489493887464-892be6d1daae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1167&q=80.jpg)` }} className="w-full h-full absolute bg-[rgba(0,0,0,0.5)] bg-cover bg-no-repeat opacity-10">
 
                 </div>
                 <canvas ref={canvasRef} width={dimensions.width} height={dimensions.height} className='bg-black' />
