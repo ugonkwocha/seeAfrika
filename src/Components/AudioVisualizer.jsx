@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react'
-import audioSource from '../data/audio/file-2.mp3';
+import audioSource from '../data/audio/file-1.mp3';
 import audioSource2 from '../data/audio/song-2.mp3';
 import image from '../data/images/aya.jpg';
 import bgImage from '../data/images/bg-image.jpg'
@@ -203,10 +203,6 @@ function AudioVisualizer() {
             setFrequency(frequencyData);
 
         }, 10)
-
-
-
-
     }, [])
 
     useEffect(() => {
@@ -218,26 +214,21 @@ function AudioVisualizer() {
             window.requestAnimationFrame(render)
         }
         render()
-
-
     }, [frequency])
 
     return (
         <div className="w-screen">
 
-
             <div onClick={playPause} className='relative bg-cover bg-no-repeat h-scren w-screen'>
                 {openPopup && <div onClick={handlePopup} className="w-full bg-red-300 h-full ">
                     click to close
                 </div>
-
                 }
 
                 <audio ref={audioPlayer} src={audioSource} preload='metadata' className='hidden'> </audio>
 
                 <div className="w-32 h-32 absolute top-[50%] left-[50%] -mt-16 -ml-16 bg-[#711724] rounded-full flex items-center justify-center">
                     <button style={{ backgroundImage: `url(${image})`, boxShadow: "0 0 10px  rgba(0,0,0,0.6)" }} className={isPlaying ? 'w-24 h-24  bg-cover bg-blue-300 m-3 bg-no-repeat  rounded-full' : ' rounded-full w-24 h-24  bg-red-300 bg-cover m-3 bg-no-repeat '}> </button>
-
                 </div>
 
                 <div style={{ backgroundImage: `url(https://images.unsplash.com/photo-1489493887464-892be6d1daae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1167&q=80.jpg)` }} className="w-full h-full absolute bg-[rgba(0,0,0,0.5)] bg-cover bg-no-repeat opacity-10">
