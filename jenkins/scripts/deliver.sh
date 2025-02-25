@@ -2,7 +2,7 @@
 
 npm run build
 
-npm run serve &
+npm run dev &
 sleep 1
 echo $! > .pidfile
 
