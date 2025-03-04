@@ -1,26 +1,62 @@
 pipeline {
     agent any
-    tools { nodejs 'node' }
+
+    environment {
+        APACHE_DIR = '/var/www/html'
+    }
+
     stages {
-        stage('Build App') {
+        stage('Checkout') {
             steps {
-                sh 'npm install'
+                git branch: 'main', url: 'https://github.com/ugonkwocha/seeAfrika.git'
             }
         }
 
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
-                sh 'cat index.html'
+                script {
+                    sh 'npm install'
+                }
             }
         }
-        stage('Deploy') {
+
+        stage('Run Tests') {
             steps {
-                sh 'chmod -R +rwx ./jenkins/scripts/deliver.sh'
-                sh 'chmod -R +rwx ./jenkins/scripts/kill.sh'
-                sh './jenkins/scripts/deliver.sh'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                sh './jenkins/scripts/kill.sh'
+                script {
+                    sh 'npm test'
+                }
             }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Deploy to Apache') {
+            steps {
+                script {
+                    sh """
+                    sudo rm -rf $APACHE_DIR/*
+                    sudo cp -r build/* $APACHE_DIR/
+                    sudo chown -R www-data:www-data $APACHE_DIR
+                    sudo chmod -R 755 $APACHE_DIR
+                    sudo systemctl restart apache2
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment to Apache Server successful!'
+        }
+        failure {
+            echo 'Deployment failed.'
         }
     }
 }
